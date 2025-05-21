@@ -1,1352 +1,205 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instituição Social: Família</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(180deg, #0a0a0a, #1a1a1a);
-            color: #d0d0d0;
-            font-family: 'Inter', sans-serif;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(0, 230, 230, 0.15), transparent 70%);
-            z-index: -1;
-            animation: pulse 8s infinite ease-in-out;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-        }
-
-        .container {
-            width: 85%;
-            max-width: 1000px;
-            background: linear-gradient(135deg, #1c1c1c, #282828);
-            border-radius: 30px;
-            padding: 60px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(0, 255, 255, 0.15);
-            position: relative;
-            animation: fadeIn 1.5s ease-in-out;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .container:hover {
-            transform: scale(1.02);
-            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(0, 255, 255, 0.2);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9) rotate(-3deg); }
-            to { opacity: 1; transform: scale(1) rotate(0deg); }
-        }
-
-        .content {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
-        }
-
-        .content.active {
-            display: block;
-            opacity: 1;
-            animation: slideIn 0.7s ease-in-out;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(50px) rotate(2deg); opacity: 0; }
-            to { transform: translateY(0) rotate(0deg); opacity: 1; }
-        }
-
-        h1 {
-            font-size: 2.8em;
-            margin-bottom: 30px;
-            color: #00e6e6;
-            text-shadow: 0 0 20px rgba(0, 230, 230, 0.8), 0 0 30px rgba(0, 230, 230, 0.4);
-            letter-spacing: 1.5px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        h1:hover::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(to right, #00e6e6, transparent);
-            animation: underline 2s infinite;
-        }
-
-        @keyframes underline {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        p {
-            font-size: 1.3em;
-            line-height: 1.9;
-            margin-bottom: 30px;
-            color: #c5c5c5;
-            position: relative;
-            padding-left: 20px;
-            border-left: 3px solid rgba(0, 230, 230, 0.3);
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        p:hover {
-            color: #e0e0e0;
-            transform: translateX(5px);
-        }
-
-        p::before {
-            content: '✦';
-            position: absolute;
-            left: -20px;
-            top: 5px;
-            color: #00e6e6;
-            opacity: 0.5;
-            animation: sparkle 2s infinite;
-        }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        img {
-            max-width: 100%;
-            border-radius: 20px;
-            margin-top: 30px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 255, 255, 0.3);
-            transition: transform 0.5s ease, filter 0.5s ease;
-        }
-
-        img:hover {
-            transform: scale(1.1) rotate(2deg);
-            filter: brightness(1.3) drop-shadow(0 0 15px rgba(0, 230, 230, 0.5));
-        }
-
-        .nav-buttons {
-            position: fixed;
-            top: 40px;
-            left: 40px;
-            display: flex;
-            gap: 25px;
-            z-index: 1000;
-        }
-
-        .nav-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.4s ease, filter 0.4s ease;
-            position: relative;
-        }
-
-        .nav-button:hover {
-            transform: scale(1.5) rotate(10deg);
-            filter: drop-shadow(0 0 12px rgba(0, 230, 230, 0.8));
-        }
-
-        .nav-button svg {
-            fill: #00e6e6;
-            width: 36px;
-            height: 36px;
-            filter: drop-shadow(0 0 10px rgba(0, 230, 230, 0.6));
-        }
-
-        .indicator {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 15px;
-        }
-
-        .dot {
-            width: 14px;
-            height: 14px;
-            background-color: #3a3a3a;
-            border-radius: 50%;
-            transition: background-color 0.4s ease, transform 0.4s ease;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .dot:hover {
-            transform: scale(1.3);
-        }
-
-        .dot.active {
-            background-color: #00e6e6;
-            transform: scale(1.4);
-            box-shadow: 0 0 12px rgba(0, 230, 230, 0.9);
-        }
-
-        .author {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            font-size: 0.9em;
-            color: #80e6e6;
-            opacity: 0.7;
-            font-style: italic;
-            text-shadow: 0 0 6px rgba(0, 230, 230, 0.4);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .author:hover {
-            opacity: 1;
-            transform: translateY(-2px);
-        }
-
-        .github-link {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
-        }
-
-        .github-link svg {
-            fill: #00e6e6;
-            width: 32px;
-            height: 32px;
-            transition: transform 0.4s ease, filter 0.4s ease;
-            filter: drop-shadow(0 0 10px rgba(0, 230, 230, 0.6));
-        }
-
-        .github-link:hover svg {
-            transform: scale(1.4) rotate(360deg);
-            filter: brightness(1.5) drop-shadow(0 0 15px rgba(0, 230, 230, 0.8));
-        }
-
-        .progress-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: rgba(0, 255, 255, 0.2);
-            z-index: 10;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(to right, #00e6e6, #00b3b3);
-            transition: width 0.5s ease;
-        }
-
-        .tooltip {
-            position: absolute;
-            background: #1c1c1c;
-            color: #00e6e6;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            z-index: 1000;
-        }
-
-        .nav-button:hover .tooltip, .dot:hover .tooltip, .github-link:hover .tooltip, .control-button:hover .tooltip, .audio-button:hover .tooltip, .theme-button:hover .tooltip, .notes-button:hover .tooltip, .share-button:hover .tooltip {
-            opacity: 1;
-            transform: translateY(-5px);
-        }
-
-        .controls {
-            position: fixed;
-            top: 40px;
-            right: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            z-index: 1000;
-        }
-
-        .control-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .control-button svg {
-            fill: #00e6e6;
-            width: 32px;
-            height: 32px;
-            filter: drop-shadow(0 0 10px rgba(0, 230, 230, 0.6));
-            transition: transform 0.4s ease;
-        }
-
-        .control-button:hover svg {
-            transform: scale(1.3);
-        }
-
-        .content-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, rgba(0, 230, 230, 0.1), transparent);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .bookmark {
-            position: absolute;
-            top: 60px;
-            right: 30px;
-            cursor: pointer;
-        }
-
-        .bookmark svg {
-            fill: #3a3a3a;
-            width: 24px;
-            height: 24px;
-            transition: fill 0.3s ease, transform 0.3s ease;
-        }
-
-        .bookmark.bookmarked svg {
-            fill: #00e6e6;
-            transform: scale(1.2);
-        }
-
-        .zoom-controls {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            display: flex;
-            gap: 15px;
-            z-index: 1000;
-        }
-
-        .zoom-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .zoom-button svg {
-            fill: #00e6e6;
-            width: 28px;
-            height: 28px;
-            filter: drop-shadow(0 0 10px rgba(0, 230, 230, 0.6));
-            transition: transform 0.4s ease;
-        }
-
-        .zoom-button:hover svg {
-            transform: scale(1.3);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: #1c1c1c;
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 500px;
-            text-align: center;
-            color: #d0d0d0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
-        }
-
-        .modal-content h2 {
-            color: #00e6e6;
-            margin-bottom: 20px;
-        }
-
-        .modal-content button {
-            background: #00e6e6;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            color: #1c1c1c;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .modal-content button:hover {
-            background: #00b3b3;
-        }
-
-        .search-bar {
-            position: fixed;
-            top: 120px;
-            left: 40px;
-            z-index: 1000;
-        }
-
-        .search-bar input {
-            padding: 10px;
-            border: none;
-            border-radius: 20px;
-            background: #2c2c2c;
-            color: #d0d0d0;
-            font-size: 0.9em;
-            width: 200px;
-            transition: width 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .search-bar input:focus {
-            width: 250px;
-            outline: none;
-            box-shadow: 0 0 10px rgba(0, 230, 230, 0.5);
-        }
-
-        .highlight {
-            background: rgba(0, 230, 230, 0.3);
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-
-        .audio-button {
-            position: absolute;
-            top: 30px;
-            left: 30px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .audio-button svg {
-            fill: #00e6e6;
-            width: 28px;
-            height: 28px;
-            filter: drop-shadow(0 0 10px rgba(0, 230, 230, 0.6));
-            transition: transform 0.4s ease;
-        }
-
-        .audio-button:hover svg {
-            transform: scale(1.3);
-        }
-
-        .theme-button {
-            position: fixed;
-            top: 200px;
-            right: 40px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .theme-button svg {
-            fill: #00e6e6;
-            width: 32px;
-            height: 32px;
-            filter: drop-shadow(0 0 10px rgba(0, 230, 230, 0.6));
-            transition: transform 0.4s ease;
-        }
-
-        .theme-button:hover svg {
-            transform: scale(1.3);
-        }
-
-        .notes-button {
-            position: fixed;
-            top: 260px;
-            right: 40px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .notes-button svg {
-            fill: #00e6e6;
-            width: 32px;
-            height: 32px;
-            filter: drop-shadow(0 0 10px rgba(0, 230, 230, 0.6));
-            transition: transform 0.4s ease;
-        }
-
-        .notes-button:hover svg {
-            transform: scale(1.3);
-        }
-
-        .share-button {
-            position: fixed;
-            top: 320px;
-            right: 40px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .share-button svg {
-            fill: #00e6e6;
-            width: 32px;
-            height: 32px;
-            filter: drop-shadow(0 0 10px rgba(0, 230, 230, 0.6));
-            transition: transform 0.4s ease;
-        }
-
-        .share-button:hover svg {
-            transform: scale(1.3);
-        }
-
-        .notes-panel {
-            display: none;
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 300px;
-            height: 100%;
-            background: #1c1c1c;
-            padding: 20px;
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.9);
-            z-index: 1500;
-            overflow-y: auto;
-        }
-
-        .notes-panel h2 {
-            color: #00e6e6;
-            margin-bottom: 20px;
-        }
-
-        .notes-panel textarea {
-            width: 100%;
-            height: 80%;
-            background: #2c2c2c;
-            border: none;
-            border-radius: 10px;
-            padding: 10px;
-            color: #d0d0d0;
-            resize: none;
-            font-size: 1em;
-        }
-
-        .notes-panel button {
-            background: #00e6e6;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            color: #1c1c1c;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-            transition: background 0.3s ease;
-        }
-
-        .notes-panel button:hover {
-            background: #00b3b3;
-        }
-
-        .dark-theme {
-            background: linear-gradient(180deg, #1a1a1a, #2a2a2a);
-        }
-
-        .dark-theme .container {
-            background: linear-gradient(135deg, #2c2c2c, #383838);
-        }
-
-        .light-theme {
-            background: linear-gradient(180deg, #e0e0e0, #f0f0f0);
-        }
-
-        .light-theme .container {
-            background: linear-gradient(135deg, #ffffff, #e0e0e0);
-            color: #1c1c1c;
-            border: 2px solid rgba(0, 100, 100, 0.3);
-        }
-
-        .light-theme h1 {
-            color: #006464;
-            text-shadow: 0 0 10px rgba(0, 100, 100, 0.8);
-        }
-
-        .light-theme p {
-            color: #333333;
-            border-left: 3px solid rgba(0, 100, 100, 0.3);
-        }
-
-        .light-theme p::before {
-            color: #006464;
-        }
-
-        .light-theme .author {
-            color: #008080;
-            text-shadow: 0 0 6px rgba(0, 100, 100, 0.4);
-        }
-
-        .light-theme .nav-button svg,
-        .light-theme .control-button svg,
-        .light-theme .zoom-button svg,
-        .light-theme .audio-button svg,
-        .light-theme .theme-button svg,
-        .light-theme .notes-button svg,
-        .light-theme .share-button svg,
-        .light-theme .github-link svg {
-            fill: #006464;
-            filter: drop-shadow(0 0 10px rgba(0, 100, 100, 0.6));
-        }
-
-        .light-theme .tooltip {
-            background: #ffffff;
-            color: #006464;
-        }
-
-        .light-theme .progress-bar {
-            background: rgba(0, 100, 100, 0.2);
-        }
-
-        .light-theme .progress-fill {
-            background: linear-gradient(to right, #006464, #004b4b);
-        }
-
-        .light-theme .search-bar input {
-            background: #e0e0e0;
-            color: #1c1c1c;
-        }
-
-        .light-theme .modal-content {
-            background: #ffffff;
-            color: #1c1c1c;
-        }
-
-        .light-theme .notes-panel {
-            background: #ffffff;
-            color: #1c1c1c;
-        }
-
-        .light-theme .notes-panel textarea {
-            background: #e0e0e0;
-            color: #1c1c1c;
-        }
-
-        .quiz-button {
-            position: fixed;
-            top: 380px;
-            right: 40px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .quiz-button svg {
-            fill: #00e6e6;
-            width: 32px;
-            height: 32px;
-            filter: drop-shadow(0 0 10px rgba(0, 230, 230, 0.6));
-            transition: transform 0.4s ease;
-        }
-
-        .quiz-button:hover svg {
-            transform: scale(1.3);
-        }
-
-        .quiz-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .quiz-modal-content {
-            background: #1c1c1c;
-            padding: 20px;
-            border-radius: 15px;
-            max-width: 600px;
-            text-align: center;
-            color: #d0d0d0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
-        }
-
-        .quiz-modal-content h2 {
-            color: #00e6e6;
-            margin-bottom: 20px;
-        }
-
-        .quiz-modal-content p {
-            font-size: 1.1em;
-            margin-bottom: 20px;
-        }
-
-        .quiz-modal-content .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .quiz-modal-content .option {
-            background: #2c2c2c;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .quiz-modal-content .option:hover {
-            background: #00e6e6;
-            color: #1c1c1c;
-        }
-
-        .quiz-modal-content button {
-            background: #00e6e6;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            color: #1c1c1c;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: background 0.3s ease;
-        }
-
-        .quiz-modal-content button:hover {
-            background: #00b3b3;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Quiz - Conceitos de Família</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d0d0d;
+      color: #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .quiz-container {
+      background: rgba(20, 20, 20, 0.8);
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+      padding: 2rem;
+      width: 100%;
+      max-width: 600px;
+      position: relative;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .question {
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .option {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 0.8rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .option:hover {
+      background: #2a2a2a;
+    }
+
+    .option.correct {
+      background: #008000;
+      color: #fff;
+      animation: correct 0.3s ease;
+    }
+
+    .option.wrong {
+      background: #800000;
+      color: #fff;
+      animation: wrong 0.3s ease;
+    }
+
+    @keyframes correct {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes wrong {
+      0% { transform: scale(1); }
+      50% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .social-icons {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-icons a {
+      color: #ccc;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: #0ff;
+    }
+  </style>
 </head>
 <body>
-    <div class="nav-buttons">
-        <button class="nav-button" onclick="prevSlide()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
-            </svg>
-            <span class="tooltip" style="top: 50px; left: 0;">Anterior</span>
-        </button>
-        <button class="nav-button" onclick="nextSlide()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M8.59 16.59L13.17 12l-4.58-4.59L10 6l6 6-6 6z"/>
-            </svg>
-            <span class="tooltip" style="top: 50px; left: 0;">Próximo</span>
-        </button>
+  <div class="quiz-container">
+    <div class="social-icons">
+      <a href="https://github.com/JohnBreno8" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://www.instagram.com/yohzn_orezno?igsh=ZjFudDNrbXdyOXV6" target="_blank"><i class="fab fa-instagram"></i></a>
     </div>
-
-    <div class="search-bar">
-        <input type="text" id="search" placeholder="Pesquisar no conteúdo..." oninput="searchContent()">
+    <div id="quiz">
+      <div class="question" id="question">Carregando pergunta...</div>
+      <div class="options" id="options"></div>
     </div>
+  </div>
 
-    <div class="controls">
-        <button class="control-button" onclick="toggleFullScreen()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
-            </svg>
-            <span class="tooltip" style="top: 50px; right: 0;">Tela Cheia</span>
-        </button>
-        <button class="control-button" onclick="toggleAutoPlay()">
-            <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-            </svg>
-            <span class="tooltip" style="top: 50px; right: 0;">Auto Play</span>
-        </button>
-        <button class="control-button" onclick="showBookmarks()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
-            </svg>
-            <span class="tooltip" style="top: 50px; right: 0;">Favoritos</span>
-        </button>
-        <button class="theme-button" onclick="toggleTheme()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M12 3a9 9 0 000 18c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-1.5 1.5-1.5 1.5z"/>
-            </svg>
-            <span class="tooltip" style="top: 50px; right: 0;">Mudar Tema</span>
-        </button>
-        <button class="notes-button" onclick="toggleNotes()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-            </svg>
-            <span class="tooltip" style="top: 50px; right: 0;">Anotações</span>
-        </button>
-        <button class="share-button" onclick="shareContent()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
-            </svg>
-            <span class="tooltip" style="top: 50px; right: 0;">Compartilhar</span>
-        </button>
-        <button class="quiz-button" onclick="startQuiz()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M9 2v8H7V2h2zm2 0v10H9V2h2zm2 0v12h-2V2h2zm2 0v10h-2V2h2zm2 0v8h-2V2h2zm2 0v6h-2V2h2z"/>
-            </svg>
-            <span class="tooltip" style="top: 50px; right: 0;">Quiz</span>
-        </button>
-    </div>
+  <audio id="sound-correct" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
+  <audio id="sound-wrong" src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" preload="auto"></audio>
 
-    <div class="zoom-controls">
-        <button class="zoom-button" onclick="zoomIn()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm-2 0h4v-4h2v4h4v2h-4v4h-2v-4H7.5z"/>
-            </svg>
-            <span class="tooltip" style="top: -40px; right: 0;">Zoom In</span>
-        </button>
-        <button class="zoom-button" onclick="zoomOut()">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zm-2 0h4v-2H7.5z"/>
-            </svg>
-            <span class="tooltip" style="top: -40px; right: 0;">Zoom Out</span>
-        </button>
-    </div>
+  <script>
+    const questions = [
+      {
+        question: "Qual é a principal função da família segundo o texto da Pessoa 1?",
+        options: ["Distribuir renda", "Socialização primária", "Educação formal"],
+        answer: 1
+      },
+      {
+        question: "Qual tipo de família é composta por apenas um dos pais e seus filhos?",
+        options: ["Família nuclear", "Família reconstituída", "Família monoparental"],
+        answer: 2
+      },
+      {
+        question: "Qual é uma das funções sociais da família mencionada pela Pessoa 3?",
+        options: ["Função jurídica", "Função afetiva", "Função tecnológica"],
+        answer: 1
+      },
+      {
+        question: "O que a família ensina na socialização segundo a Pessoa 4?",
+        options: ["Lógica matemática", "Normas básicas e valores", "Leis penais"],
+        answer: 1
+      },
+      {
+        question: "Qual fator contribuiu para mudanças na estrutura familiar?",
+        options: ["Criação do rádio", "Revolução Francesa", "Inserção da mulher no mercado de trabalho"],
+        answer: 2
+      },
+      {
+        question: "Segundo Durkheim, a família ajuda a manter:",
+        options: ["O sistema financeiro", "A ordem social", "A democracia parlamentar"],
+        answer: 1
+      }
+    ];
 
-    <div class="container">
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress"></div>
-        </div>
+    let currentQuestion = 0;
 
-        <div class="content" id="slide1">
-            <div class="content-overlay"></div>
-            <button class="audio-button" onclick="readSlide(1)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.19 2.5-3.97zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z"/>
-                </svg>
-                <span class="tooltip" style="top: 40px; left: 0;">Ler Conteúdo</span>
-            </button>
-            <h1>Conceito de Família</h1>
-            <p>A família é uma das instituições sociais mais antigas e fundamentais da sociedade. Ela é responsável pela socialização primária dos indivíduos, ou seja, é no seio familiar que aprendemos valores, normas e comportamentos sociais. A família também é uma estrutura que proporciona apoio emocional, cuidado e proteção, sendo essencial para a formação da identidade pessoal e social. Ela não é estática, podendo mudar conforme o tempo, cultura e organização social.</p>
-            <span class="author">John</span>
-            <span class="bookmark" onclick="toggleBookmark(1)" data-slide="1">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
-                </svg>
-            </span>
-        </div>
+    const questionEl = document.getElementById('question');
+    const optionsEl = document.getElementById('options');
+    const correctSound = document.getElementById('sound-correct');
+    const wrongSound = document.getElementById('sound-wrong');
 
-        <div class="content" id="slide2">
-            <div class="content-overlay"></div>
-            <button class="audio-button" onclick="readSlide(2)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.19 2.5-3.97zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z"/>
-                </svg>
-                <span class="tooltip" style="top: 40px; left: 0;">Ler Conteúdo</span>
-            </button>
-            <h1>Tipos de Família</h1>
-            <p>Existem vários tipos de família, e eles refletem a diversidade das sociedades. A família nuclear é composta por pai, mãe e filhos. Já a família extensa ou alargada inclui outros parentes, como avós, tios e primos. A família monoparental é aquela formada por apenas um dos pais e seus filhos. Há também as famílias reconstituídas, que surgem da união de pessoas com filhos de relacionamentos anteriores, e as famílias homoafetivas, compostas por casais do mesmo sexo. Todos esses tipos são formas legítimas de organização familiar.</p>
-            <span class="author">Jackson</span>
-            <span class="bookmark" onclick="toggleBookmark(2)" data-slide="2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
-                </svg>
-            </span>
-        </div>
+    function loadQuestion() {
+      const q = questions[currentQuestion];
+      questionEl.textContent = q.question;
+      optionsEl.innerHTML = "";
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.textContent = `${String.fromCharCode(65 + index)}. ${opt}`;
+        btn.onclick = () => handleAnswer(index, btn);
+        optionsEl.appendChild(btn);
+      });
+    }
 
-        <div class="content" id="slide3">
-            <div class="content-overlay"></div>
-            <button class="audio-button" onclick="readSlide(3)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.19 2.5-3.97zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z"/>
-                </svg>
-                <span class="tooltip" style="top: 40px; left: 0;">Ler Conteúdo</span>
-            </button>
-            <h1>Funções da Família</h1>
-            <p>A família cumpre diversas funções sociais importantes. Entre elas, a função biológica, relacionada à reprodução e perpetuação da espécie; a função econômica, que envolve a provisão de sustento e recursos materiais; a função educadora, na transmissão de valores, regras e tradições culturais; e a função afetiva, que garante apoio emocional e estabilidade aos seus membros. Sem essas funções, a integração do indivíduo na sociedade seria comprometida.</p>
-            <span class="author">Geandeson</span>
-            <span class="bookmark" onclick="toggleBookmark(3)" data-slide="3">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
-                </svg>
-            </span>
-        </div>
+    function handleAnswer(selected, btn) {
+      const correct = questions[currentQuestion].answer;
+      const buttons = document.querySelectorAll(".option");
+      buttons.forEach(b => b.onclick = null); // desativa cliques
 
-        <div class="content" id="slide4">
-            <div class="content-overlay"></div>
-            <button class="audio-button" onclick="readSlide(4)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.19 2.5-3.97zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z"/>
-                </svg>
-                <span class="tooltip" style="top: 40px; left: 0;">Ler Conteúdo</span>
-            </button>
-            <h1>Função Socializadora da Família</h1>
-            <p>Uma das principais funções da família é a socialização. É no ambiente familiar que a criança aprende a linguagem, os costumes, o que é certo e errado, como se comportar e se relacionar com outras pessoas. A família ensina desde normas básicas de convivência até valores mais profundos, como respeito, solidariedade e empatia. Esse processo é essencial para que o indivíduo possa viver em sociedade e interagir com outras instituições sociais, como a escola e o trabalho.</p>
-            <span class="author">Apolônio</span>
-            <span class="bookmark" onclick="toggleBookmark(4)" data-slide="4">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
-                </svg>
-            </span>
-        </div>
+      if (selected === correct) {
+        btn.classList.add("correct");
+        correctSound.play();
+      } else {
+        btn.classList.add("wrong");
+        buttons[correct].classList.add("correct");
+        wrongSound.play();
+      }
 
-        <div class="content" id="slide5">
-            <div class="content-overlay"></div>
-            <button class="audio-button" onclick="readSlide(5)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.19 2.5-3.97zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z"/>
-                </svg>
-                <span class="tooltip" style="top: 40px; left: 0;">Ler Conteúdo</span>
-            </button>
-            <h1>Transformações na Estrutura Familiar</h1>
-            <p>A estrutura familiar passou por diversas transformações ao longo da história. No passado, predominava o modelo patriarcal, onde o homem era a figura de autoridade e provedor. Com o tempo, a família foi se tornando mais democrática e igualitária, com maior participação da mulher e reconhecimento da diversidade familiar. Fatores como o avanço dos direitos civis, a inserção da mulher no mercado de trabalho e as novas concepções de casamento contribuíram para essa mudança.</p>
-            <span class="author">Rafael</span>
-            <span class="bookmark" onclick="toggleBookmark(5)" data-slide="5">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
-                </svg>
-            </span>
-        </div>
-
-        <div class="content" id="slide6">
-            <div class="content-overlay"></div>
-            <button class="audio-button" onclick="readSlide(6)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.19 2.5-3.97zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77 0-4.28-2.99-7.86-7-8.77z"/>
-                </svg>
-                <span class="tooltip" style="top: 40px; left: 0;">Ler Conteúdo</span>
-            </button>
-            <h1>Teórico: Émile Durkheim</h1>
-            <p>Émile Durkheim, um dos fundadores da Sociologia, estudou a família como uma instituição essencial para a coesão social. Para ele, a família é responsável pela transmissão dos valores coletivos e pelo fortalecimento da solidariedade entre os indivíduos. Durkheim via a família como uma estrutura que ajuda a manter a ordem social, pois ela molda o comportamento dos indivíduos de acordo com as normas da sociedade. Ele também analisou como as mudanças sociais impactam a forma e a função da família.</p>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/%C3%89mile_Durkheim.jpg/512px-%C3%89mile_Durkheim.jpg" alt="Émile Durkheim">
-            <span class="author">Wasley</span>
-            <span class="bookmark" onclick="toggleBookmark(6)" data-slide="6">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
-                </svg>
-            </span>
-            <a class="github-link" href="https://github.com/JohnBreno8" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.083-.729.083-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                </svg>
-                <span class="tooltip" style="bottom: 50px; right: 0;">Visite o GitHub</span>
-            </a>
-        </div>
-
-        <div class="indicator">
-            <span class="dot" data-slide="1"><span class="tooltip" style="bottom: 30px;">Conceito</span></span>
-            <span class="dot" data-slide="2"><span class="tooltip" style="bottom: 30px;">Tipos</span></span>
-            <span class="dot" data-slide="3"><span class="tooltip" style="bottom: 30px;">Funções</span></span>
-            <span class="dot" data-slide="4"><span class="tooltip" style="bottom: 30px;">Socialização</span></span>
-            <span class="dot" data-slide="5"><span class="tooltip" style="bottom: 30px;">Transformações</span></span>
-            <span class="dot" data-slide="6"><span class="tooltip" style="bottom: 30px;">Durkheim</span></span>
-        </div>
-    </div>
-
-    <div class="modal" id="bookmarkModal">
-        <div class="modal-content">
-            <h2>Favoritos</h2>
-            <ul id="bookmarkList"></ul>
-            <button onclick="closeModal('bookmarkModal')">Fechar</button>
-        </div>
-    </div>
-
-    <div class="notes-panel" id="notesPanel">
-        <h2>Anotações</h2>
-        <textarea id="notes" placeholder="Escreva suas anotações aqui..."></textarea>
-        <button onclick="saveNotes()">Salvar</button>
-        <button onclick="toggleNotes()">Fechar</button>
-    </div>
-
-    <div class="quiz-modal" id="quizModal">
-        <div class="quiz-modal-content">
-            <h2>Quiz: Família</h2>
-            <p id="quizQuestion"></p>
-            <div class="options" id="quizOptions"></div>
-            <button onclick="closeModal('quizModal')">Fechar</button>
-        </div>
-    </div>
-
-    <script>
-        let currentSlide = 1;
-        const totalSlides = 6;
-        let autoPlayInterval = null;
-        let isAutoPlaying = false;
-        let zoomLevel = 1;
-        let bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
-        let isSpeaking = false;
-        let currentTheme = localStorage.getItem('theme') || 'dark';
-        let notes = JSON.parse(localStorage.getItem('notes')) || {};
-
-        const quizQuestions = [
-            {
-                question: "Qual é a principal função da família segundo o conceito apresentado?",
-                options: [
-                    "Socialização primária",
-                    "Produção econômica",
-                    "Entretenimento",
-                    "Governança"
-                ],
-                correct: 0
-            },
-            {
-                question: "Qual tipo de família é composta por apenas um dos pais e seus filhos?",
-                options: [
-                    "Nuclear",
-                    "Monoparental",
-                    "Extensa",
-                    "Homoafetiva"
-                ],
-                correct: 1
-            },
-            {
-                question: "Segundo Émile Durkheim, a família contribui para:",
-                options: [
-                    "Competição social",
-                    "Coesão social",
-                    "Isolamento individual",
-                    "Desordem social"
-                ],
-                correct: 1
-            }
-        ];
-        let currentQuizQuestion = 0;
-
-        function showSlide(slideNumber) {
-            document.querySelectorAll('.content').forEach(slide => {
-                slide.classList.remove('active');
-            });
-            document.getElementById(`slide${slideNumber}`).classList.add('active');
-
-            document.querySelectorAll('.dot').forEach(dot => {
-                dot.classList.remove('active');
-                if (parseInt(dot.getAttribute('data-slide')) === slideNumber) {
-                    dot.classList.add('active');
-                }
-            });
-
-            const progress = document.getElementById('progress');
-            progress.style.width = `${(slideNumber / totalSlides) * 100}%`;
-
-            document.title = `Família: Slide ${slideNumber}/${totalSlides}`;
-            updateBookmarks();
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          loadQuestion();
+        } else {
+          questionEl.textContent = "Quiz finalizado!";
+          optionsEl.innerHTML = "";
         }
+      }, 1500);
+    }
 
-        function nextSlide() {
-            currentSlide = currentSlide < totalSlides ? currentSlide + 1 : 1;
-            showSlide(currentSlide);
-            playSound('click');
-        }
-
-        function prevSlide() {
-            currentSlide = currentSlide > 1 ? currentSlide - 1 : totalSlides;
-            showSlide(currentSlide);
-            playSound('click');
-        }
-
-        function toggleAutoPlay() {
-            const playIcon = document.getElementById('play-icon');
-            if (isAutoPlaying) {
-                clearInterval(autoPlayInterval);
-                isAutoPlaying = false;
-                playIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-            } else {
-                autoPlayInterval = setInterval(nextSlide, 5000);
-                isAutoPlaying = true;
-                playIcon.innerHTML = '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>';
-            }
-            playSound('toggle');
-        }
-
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.error(`Erro ao entrar em tela cheia: ${err.message}`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
-            playSound('toggle');
-        }
-
-        function zoomIn() {
-            zoomLevel = Math.min(zoomLevel + 0.1, 1.5);
-            document.querySelector('.container').style.transform = `scale(${zoomLevel})`;
-            playSound('zoom');
-        }
-
-        function zoomOut() {
-            zoomLevel = Math.max(zoomLevel - 0.1, 0.8);
-            document.querySelector('.container').style.transform = `scale(${zoomLevel})`;
-            playSound('zoom');
-        }
-
-        function toggleBookmark(slideNumber) {
-            const bookmark = document.querySelector(`.bookmark[data-slide="${slideNumber}"]`);
-            if (bookmarks.includes(slideNumber)) {
-                bookmarks = bookmarks.filter(num => num !== slideNumber);
-                bookmark.classList.remove('bookmarked');
-            } else {
-                bookmarks.push(slideNumber);
-                bookmark.classList.add('bookmarked');
-            }
-            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-            playSound('bookmark');
-        }
-
-        function showBookmarks() {
-            const modal = document.getElementById('bookmarkModal');
-            const bookmarkList = document.getElementById('bookmarkList');
-            bookmarkList.innerHTML = '';
-            bookmarks.forEach(slide => {
-                const title = document.querySelector(`#slide${slide} h1`).textContent;
-                const li = document.createElement('li');
-                li.innerHTML = `<a href="#" onclick="goToSlide(${slide}); closeModal('bookmarkModal');">${title}</a>`;
-                bookmarkList.appendChild(li);
-            });
-            modal.style.display = 'flex';
-            playSound('modal');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            playSound('click');
-        }
-
-        function goToSlide(slideNumber) {
-            currentSlide = slideNumber;
-            showSlide(currentSlide);
-        }
-
-        function searchContent() {
-            const searchTerm = document.getElementById('search').value.toLowerCase();
-            document.querySelectorAll('.content p').forEach(p => {
-                const text = p.textContent.toLowerCase();
-                p.innerHTML = p.textContent;
-                if (searchTerm && text.includes(searchTerm)) {
-                    p.innerHTML = p.textContent.replace(new RegExp(searchTerm, 'gi'), match => `<span class="highlight">${match}</span>`);
-                }
-            });
-        }
-
-        function updateBookmarks() {
-            document.querySelectorAll('.bookmark').forEach(bookmark => {
-                const slide = parseInt(bookmark.getAttribute('data-slide'));
-                if (bookmarks.includes(slide)) {
-                    bookmark.classList.add('bookmarked');
-                } else {
-                    bookmark.classList.remove('bookmarked');
-                }
-            });
-        }
-
-        function readSlide(slideNumber) {
-            if ('speechSynthesis' in window) {
-                const slide = document.getElementById(`slide${slideNumber}`);
-                const title = slide.querySelector('h1').textContent;
-                const text = slide.querySelector('p').textContent;
-                const content = `${title}. ${text}`;
-
-                if (isSpeaking) {
-                    window.speechSynthesis.cancel();
-                    isSpeaking = false;
-                } else {
-                    const utterance = new SpeechSynthesisUtterance(content);
-                    utterance.lang = 'pt-BR';
-                    utterance.rate = 1;
-                    utterance.pitch = 1;
-                    utterance.volume = 1;
-                    utterance.onend = () => {
-                        isSpeaking = false;
-                    };
-                    window.speechSynthesis.speak(utterance);
-                    isSpeaking = true;
-                    playSound('click');
-                }
-            } else {
-                alert('Desculpe, a síntese de voz não é suportada neste navegador.');
-            }
-        }
-
-        function toggleTheme() {
-            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            document.body.className = `${currentTheme}-theme`;
-            localStorage.setItem('theme', currentTheme);
-            playSound('toggle');
-        }
-
-        function toggleNotes() {
-            const notesPanel = document.getElementById('notesPanel');
-            const notesTextarea = document.getElementById('notes');
-            if (notesPanel.style.display === 'block') {
-                notesPanel.style.display = 'none';
-            } else {
-                notesPanel.style.display = 'block';
-                notesTextarea.value = notes[currentSlide] || '';
-            }
-            playSound('modal');
-        }
-
-        function saveNotes() {
-            const notesTextarea = document.getElementById('notes');
-            notes[currentSlide] = notesTextarea.value;
-            localStorage.setItem('notes', JSON.stringify(notes));
-            alert('Anotações salvas!');
-            playSound('click');
-        }
-
-        function shareContent() {
-            const shareData = {
-                title: 'Instituição Social: Família',
-                text: `Confira este conteúdo sobre a instituição social da família! Atualmente no slide ${currentSlide}: ${document.querySelector(`#slide${currentSlide} h1`).textContent}`,
-                url: window.location.href
-            };
-            if (navigator.share) {
-                navigator.share(shareData).catch(err => {
-                    console.error('Erro ao compartilhar:', err);
-                });
-            } else {
-                navigator.clipboard.writeText(`${shareData.title}: ${shareData.text} - ${shareData.url}`);
-                alert('Link copiado para a área de transferência!');
-            }
-            playSound('click');
-        }
-
-        function startQuiz() {
-            currentQuizQuestion = 0;
-            showQuizQuestion();
-            document.getElementById('quizModal').style.display = 'flex';
-            playSound('modal');
-        }
-
-        function showQuizQuestion() {
-            const quizModalContent = document.querySelector('.quiz-modal-content');
-            const quizQuestion = document.getElementById('quizQuestion');
-            const quizOptions = document.getElementById('quizOptions');
-            const question = quizQuestions[currentQuizQuestion];
-
-            quizQuestion.textContent = question.question;
-            quizOptions.innerHTML = '';
-            question.options.forEach((option, index) => {
-                const optionElement = document.createElement('div');
-                optionElement.className = 'option';
-                optionElement.textContent = option;
-                optionElement.onclick = () => checkAnswer(index);
-                quizOptions.appendChild(optionElement);
-            });
-        }
-
-        function checkAnswer(selectedIndex) {
-            const question = quizQuestions[currentQuizQuestion];
-            if (selectedIndex === question.correct) {
-                alert('Resposta correta!');
-            } else {
-                alert('Resposta incorreta. Tente novamente!');
-                return;
-            }
-            currentQuizQuestion++;
-            if (currentQuizQuestion < quizQuestions.length) {
-                showQuizQuestion();
-            } else {
-                alert('Parabéns! Você completou o quiz!');
-                closeModal('quizModal');
-            }
-            playSound('click');
-        }
-
-        function playSound(type) {
-            const sounds = {
-                click: new Audio('https://freesound.org/data/previews/171/171671_2437358-lq.mp3'),
-                toggle: new Audio('https://freesound.org/data/previews/198/198841_3662494-lq.mp3'),
-                zoom: new Audio('https://freesound.org/data/previews/270/270301_5123851-lq.mp3'),
-                bookmark: new Audio('https://freesound.org/data/previews/170/170126_2889833-lq.mp3'),
-                modal: new Audio('https://freesound.org/data/previews/245/245645_4062642-lq.mp3')
-            };
-            sounds[type]?.play();
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowRight') {
-                nextSlide();
-            } else if (event.key === 'ArrowLeft') {
-                prevSlide();
-            } else if (event.key === ' ') {
-                toggleAutoPlay();
-            } else if (event.key === 'f') {
-                toggleFullScreen();
-            } else if (event.key === '+') {
-                zoomIn();
-            } else if (event.key === '-') {
-                zoomOut();
-            } else if (event.key === 'b') {
-                toggleBookmark(currentSlide);
-            } else if (event.key === 'a') {
-                readSlide(currentSlide);
-            } else if (event.key === 't') {
-                toggleTheme();
-            } else if (event.key === 'n') {
-                toggleNotes();
-            } else if (event.key === 's') {
-                shareContent();
-            } else if (event.key === 'q') {
-                startQuiz();
-            }
-        });
-
-        // Touch swipe support
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        document.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        document.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            if (touchEndX < touchStartX - 50) nextSlide();
-            if (touchEndX > touchStartX + 50) prevSlide();
-        });
-
-        // Click on dots for navigation
-        document.querySelectorAll('.dot').forEach(dot => {
-            dot.addEventListener('click', () => {
-                currentSlide = parseInt(dot.getAttribute('data-slide'));
-                showSlide(currentSlide);
-                playSound('click');
-            });
-        });
-
-        // Mouse wheel navigation
-        document.addEventListener('wheel', (event) => {
-            if (event.deltaY > 0) {
-                nextSlide();
-            } else {
-                prevSlide();
-            }
-        });
-
-        // Double-click to toggle full screen
-        document.querySelector('.container').addEventListener('dblclick', toggleFullScreen);
-
-        // Click on heading to copy text
-        document.querySelectorAll('h1').forEach(h1 => {
-            h1.addEventListener('click', () => {
-                navigator.clipboard.writeText(h1.textContent);
-                alert('Título copiado para a área de transferência!');
-                playSound('click');
-            });
-        });
-
-        // Initialize first slide, bookmarks, theme, and notes
-        document.body.className = `${currentTheme}-theme`;
-        showSlide(currentSlide);
-        updateBookmarks();
-    </script>
+    loadQuestion();
+  </script>
 </body>
 </html>
